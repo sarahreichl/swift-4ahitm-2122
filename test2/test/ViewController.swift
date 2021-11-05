@@ -35,24 +35,9 @@ class ViewController: UIViewController {
     
     @IBAction func onclick(_ sender: UIButton) {
         // Check for input not nill
-        if(Optional(guessedNumber) != nil){
-            print("")
-            guessedNumber = compare(guessedString: textField.text!)
-            
-            let text: String?
-            switch guessedNumber{
-            case -1:
-                text = "Your number is to low"
-            case 1:
-                text = "Your number is too high"
-            default:
-                text = "Hurray! Thats the number!"
-            }
-            label.text = text
-            model.counterOfTrys+=1
-        }
+        checkNumber()
         
-        
+        model.counterOfTrys+=1
     }
     
     func compare(guessedString: String) -> Int! {
@@ -60,7 +45,35 @@ class ViewController: UIViewController {
         return model.compare(guess: guess)
     }
     
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        
+        print("no")
+        return false
+    }
     
+    func checkNumber() -> Bool{
+        if(Optional(guessedNumber) != nil){
+            print("")
+            guessedNumber = compare(guessedString: textField.text!)
+            
+            let text: String?
+            
+            switch guessedNumber{
+            case -1:
+                text = "Your number is to low"
+                return false
+            case 1:
+                text = "Your number is too high"
+                return false
+            default:
+                text = "Hurray! Thats the number!"
+                return true
+            }
+            label.text = text
+            
+        }
+        return false
+    }
 
 
 }
