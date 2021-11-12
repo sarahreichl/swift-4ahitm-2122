@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     var model = Model()
     var guessedNumber = 0
-    
+
     
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var textField: UITextField!
@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         model.numberToGuess = Int(arc4random_uniform(100));
         label.text = "Try to guess the number!"
         
+        print(model.numberToGuess)
     }
     
     @IBAction func onChangeTextField(_ sender: UITextField) {
@@ -35,7 +36,9 @@ class ViewController: UIViewController {
     
     @IBAction func onclick(_ sender: UIButton) {
         // Check for input not nill
-        checkNumber()
+        //if(checkNumber()){
+            
+        //}
         
         model.counterOfTrys+=1
     }
@@ -46,7 +49,9 @@ class ViewController: UIViewController {
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        
+        if(checkNumber()){
+            return true
+        }
         print("no")
         return false
     }
@@ -61,15 +66,18 @@ class ViewController: UIViewController {
             switch guessedNumber{
             case -1:
                 text = "Your number is to low"
+                label.text = text
                 return false
             case 1:
                 text = "Your number is too high"
+                label.text = text
                 return false
             default:
                 text = "Hurray! Thats the number!"
+                label.text = text
                 return true
             }
-            label.text = text
+            
             
         }
         return false
