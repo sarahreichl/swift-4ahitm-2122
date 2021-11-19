@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     var model = Model()
-    var guessedNumber = 0
+    var compareResult = 0
 
     
     @IBOutlet weak var label: UILabel!
@@ -26,26 +26,36 @@ class ViewController: UIViewController {
         print(model.numberToGuess)
     }
     
+    @IBAction func newGameButton(_ sender: UIButton) {
+        model.numberToGuess = Int(arc4random_uniform(100))
+        model.attempts.removeAll()
+    }
+    
+    @IBAction func changeToTableView(_ sender: UIButton) {
+    }
+    
     @IBAction func onChangeTextField(_ sender: UITextField) {
         if(model.isValid(guess: Int(textField.text!))){
-        buttonGuess.isEnabled = true;
+        buttonGuess.isEnabled = true
         } else {
             buttonGuess.isEnabled = false
         }
     }
     
     @IBAction func onclick(_ sender: UIButton) {
-        // Check for input not nill
-        //if(checkNumber()){
-            
-        //}
-        
-        model.counterOfTrys+=1
+        //model.counterOfTrys+=1
+        let guess = Int(textField.text!)!
+        model.addGuessedNumber(guess: guess)
     }
     
     func compare(guessedString: String) -> Int! {
         let guess = Int(guessedString)!
         return model.compare(guess: guess)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+       let tableViewController = segue.destination as? TableTableViewController
+        tableViewController?.model = model
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
@@ -57,13 +67,12 @@ class ViewController: UIViewController {
     }
     
     func checkNumber() -> Bool{
-        if(Optional(guessedNumber) != nil){
-            print("")
-            guessedNumber = compare(guessedString: textField.text!)
+        if(Optional(compareResult) != nil){
+            var compareResult = compare(guessedString: textField.text!)
             
             let text: String?
             
-            switch guessedNumber{
+            switch compareResult{
             case -1:
                 text = "Your number is to low"
                 label.text = text
